@@ -4,10 +4,10 @@ from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori, association_rules
 
 st.set_page_config(page_title="關聯規則分析工具", layout="wide")
-st.title("萬用關聯規則分析系統")
+st.title("關聯規則分析系統")
 
 # --- 1. 檔案上傳 ---
-uploaded_file = st.file_uploader("請上傳 Excel 檔案", type=["xlsx", "xls"])
+uploaded_file = st.file_uploader("請上傳 Excel 格式的檔案", type=["xlsx", "xls"])
 
 if uploaded_file:
     # 讀取資料
@@ -45,7 +45,7 @@ if uploaded_file:
                     rules = rules[rules["confidence"] >= min_confidence]
 
                     if not rules.empty:
-                        st.success(f"✅ 分析完成！找到 {len(rules)} 條規則")
+                        st.success(f"分析完成！找到 {len(rules)} 條規則")
                         
                         # 格式化顯示
                         display_df = rules[["antecedents", "consequents", "support", "confidence", "lift"]].copy()
@@ -54,11 +54,11 @@ if uploaded_file:
                         
                         st.dataframe(display_df.sort_values("lift", ascending=False), use_container_width=True)
                     else:
-                        st.warning("⚠️ 找不到符合過濾條件 (Confidence/Lift) 的規則。")
+                        st.warning("找不到符合過濾條件 (Confidence/Lift) 的規則。")
                 else:
-                    st.error("❌ 支持度 (Support) 設定太高，找不到任何頻繁項目。")
+                    st.error("支持度 (Support) 設定太高，找不到任何頻繁項目。")
             
             except Exception as e:
                 st.error(f"執行發生錯誤: {e}")
 else:
-    st.info("💡 請先從上方上傳 Excel 檔案開始分析。")
+    st.info("請先從上方上傳 Excel 檔案開始分析。")
